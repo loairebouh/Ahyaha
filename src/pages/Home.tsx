@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
+import slogenImage from "../assets/heart.png";
 
 const Home: React.FC = () => {
 	const navigate = useNavigate();
@@ -8,19 +9,27 @@ const Home: React.FC = () => {
 	return (
 		<div>
 			<NavBar></NavBar>
-			<div className="grid grid-cols-2 gap-4 p-8">
+			<img
+				src={slogenImage}
+				alt="Description of the image"
+				className=" mt-10 my-15 mx-auto"
+			/>
+			<div className="grid grid-cols-2 gap-4 p-8 mb-20">
 				<div
 					onClick={() => navigate("/add-donor")}
-					className="bg-blue-500 text-white p-8 rounded shadow text-center cursor-pointer"
+					className="bg-green-500 text-white py-20 rounded-xl shadow text-center cursor-pointer "
 				>
-					<h2>Add Donor</h2>
+					<div className="text-5xl font-medium">Add Donor</div>
 				</div>
 				<div
 					onClick={() => navigate("/donor-list")}
-					className="bg-green-500 text-white p-8 rounded shadow text-center cursor-pointer"
+					className="bg-blue-950	 text-white py-20 rounded-xl shadow text-center cursor-pointer"
 				>
-					<h2>View Donors</h2>
+					<div className="text-5xl font-medium">Donation List</div>
 				</div>
+			</div>
+			<div className="text-center align-bottom mt-10 mb-0 pb-0">
+				All Rights Reserved to Qotra Development 2025
 			</div>
 		</div>
 	);
