@@ -14,14 +14,22 @@ const DonorList: React.FC = () => {
 		setDonors(storedDonors);
 	}, []);
 
-	// Handle deleting a donor
+	// Handle deleting a donor with confirmation
 	const handleDelete = (id: number) => {
-		// Filter out the donor by ID
-		const updatedDonors = donors.filter((donor) => donor.id !== id);
+		const confirmation = window.prompt(
+			"Type 'delete' to confirm the deletion of this donor."
+		);
 
-		// Update localStorage with the new donors list
-		localStorage.setItem("donors", JSON.stringify(updatedDonors));
-		setDonors(updatedDonors); // Update the state with the filtered list
+		if (confirmation?.toLowerCase() === "delete") {
+			// Filter out the donor by ID
+			const updatedDonors = donors.filter((donor) => donor.id !== id);
+
+			// Update localStorage with the new donors list
+			localStorage.setItem("donors", JSON.stringify(updatedDonors));
+			setDonors(updatedDonors); // Update the state with the filtered list
+		} else {
+			alert("Deletion cancelled. Type 'delete' to confirm.");
+		}
 	};
 
 	const handleInputChange = (
@@ -113,7 +121,20 @@ const DonorList: React.FC = () => {
 											Edit
 										</button>
 										<button
-											onClick={() => handleDelete(donor.id)}
+											onClick={() => {
+												if (donor.id !== undefined) {
+													const confirmDelete = window.prompt(
+														"Type 'DELETE' to confirm the deletion"
+													);
+													if (confirmDelete === "DELETE") {
+														handleDelete(donor.id);
+													} else {
+														alert("Delete operation canceled.");
+													}
+												} else {
+													alert("Invalid donor ID");
+												}
+											}}
 											className="bg-red-500 text-white px-2 py-1 rounded"
 										>
 											Delete
