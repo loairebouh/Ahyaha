@@ -1,20 +1,29 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import qotraLogo from "@/assets/qotralogo.png";
+import { Modal, Box, Typography, Button } from "@mui/material";
 
 const LoginPage: React.FC = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
+	const [openModal, setOpenModal] = useState(false);
+	const [modalMessage, setModalMessage] = useState("");
 	const navigate = useNavigate();
 
 	const handleLogin = (e: React.FormEvent) => {
 		e.preventDefault();
 		if (username === "qotra" && password === "admin") {
-			alert("Login successful!");
-			navigate("/home");
+			setModalMessage("Login successful!");
+			setOpenModal(true);
+			setTimeout(() => navigate("/home"), 1500); // Navigate after 1.5s
 		} else {
-			alert("Invalid username or password");
+			setModalMessage("Invalid username or password");
+			setOpenModal(true);
 		}
+	};
+
+	const handleCloseModal = () => {
+		setOpenModal(false);
 	};
 
 	return (
@@ -54,6 +63,39 @@ const LoginPage: React.FC = () => {
 					</p>
 				</form>
 			</div>
+			<Modal
+				open={openModal}
+				onClose={handleCloseModal}
+				aria-labelledby="modal-modal-title"
+				aria-describedby="modal-modal-description"
+			>
+				<Box
+					sx={{
+						position: "absolute",
+						top: "50%",
+						left: "50%",
+						transform: "translate(-50%, -50%)",
+						width: 300,
+						bgcolor: "background.paper",
+						boxShadow: 24,
+						p: 4,
+						borderRadius: 2,
+						textAlign: "center",
+					}}
+				>
+					<Typography id="modal-modal-title" variant="h6" component="h2">
+						{modalMessage}
+					</Typography>
+					<Button
+						variant="contained"
+						color="primary"
+						sx={{ mt: 2 }}
+						onClick={handleCloseModal}
+					>
+						Close
+					</Button>
+				</Box>
+			</Modal>
 		</div>
 	);
 };

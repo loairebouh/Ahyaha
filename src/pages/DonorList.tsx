@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Donor } from "../types/donor";
 import NavBar from "../components/NavBar";
@@ -10,24 +9,28 @@ const DonorList: React.FC = () => {
 	const [editingDonor, setEditingDonor] = useState<Donor | null>(null);
 	const [startDate, setStartDate] = useState<string>("");
 	const [endDate, setEndDate] = useState<string>("");
+	const [openDeleteModal, setOpenDeleteModal] = useState(false);
+	const [donorToDelete, setDonorToDelete] = useState<Donor | null>(null);
+	const [deleteConfirmation, setDeleteConfirmation] = useState("");
 
 	useEffect(() => {
 		const storedDonors = JSON.parse(localStorage.getItem("donors") || "[]");
 		setDonors(storedDonors);
 	}, []);
 
-	// Handle deleting a donor with confirmation
-	const handleDelete = (id: number) => {
-		const confirmation = window.prompt(
-			"Type 'delete' to confirm the deletion of this donor."
-		);
-
-		if (confirmation?.toLowerCase() === "delete") {
-			const updatedDonors = donors.filter((donor) => donor.id !== id);
+	const handleDelete = () => {
+		if (
+			deleteConfirmation.toLowerCase() === "deletedonation" &&
+			donorToDelete
+		) {
+			const updatedDonors = donors.filter(
+				(donor) => donor.id !== donorToDelete.id
+			);
 			localStorage.setItem("donors", JSON.stringify(updatedDonors));
 			setDonors(updatedDonors);
+			setOpenDeleteModal(false);
 		} else {
-			alert("Deletion cancelled. Type 'delete' to confirm.");
+			alert("Please type 'deletedonation' to confirm the deletion.");
 		}
 	};
 
@@ -35,9 +38,6 @@ const DonorList: React.FC = () => {
 		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 	) => {
 		const { name, value } = e.target;
-
-		console.log("Updating donor:", { name, value });
-
 		setEditingDonor((prev) => {
 			if (!prev) return prev;
 			return { ...prev, [name]: value };
@@ -60,26 +60,20 @@ const DonorList: React.FC = () => {
 			const query = searchQuery.toLowerCase();
 			const customId = donor.customId || "";
 			const donationDate = new Date(donor.donationDate);
-
-			// Filter by search query
 			let matchesQuery = false;
-			if (searchBy === "name") {
+			if (searchBy === "name")
 				matchesQuery = donor.fullName.toLowerCase().includes(query);
-			} else if (searchBy === "bloodGroup") {
+			else if (searchBy === "bloodGroup")
 				matchesQuery = donor.bloodGroup.toLowerCase().includes(query);
-			} else if (searchBy === "customId") {
+			else if (searchBy === "customId")
 				matchesQuery = customId.toLowerCase().includes(query);
-			} else if (searchBy === "donationDate") {
+			else if (searchBy === "donationDate")
 				matchesQuery = donor.donationDate.toLowerCase().includes(query);
-			} else if (searchBy === "phenotype") {
-				matchesQuery = donor.phenotype?.toLowerCase().includes(query); // Added phenotype condition
-			}
-
-			// Filter by date range
+			else if (searchBy === "phenotype")
+				matchesQuery = donor.phenotype?.toLowerCase().includes(query);
 			const matchesDateRange =
 				(!startDate || donationDate >= new Date(startDate)) &&
 				(!endDate || donationDate <= new Date(endDate));
-
 			return matchesQuery && matchesDateRange;
 		})
 		.reverse();
@@ -144,7 +138,7 @@ const DonorList: React.FC = () => {
 				<table className="table-auto w-full border-collapse border border-gray-500">
 					<thead>
 						<tr className="bg-gray-100">
-							<th className="border px-4 py-2">Donation Date</th>{" "}
+							<th className="border px-4 py-2">Donation Date</th>
 							<th className="border px-4 py-2">Custom ID</th>
 							<th className="border px-4 py-2">Name</th>
 							<th className="border px-4 py-2">Phone</th>
@@ -161,7 +155,7 @@ const DonorList: React.FC = () => {
 								<tr key={donor.id} className="hover:bg-gray-50">
 									<td className="border px-4 py-2 text-center">
 										{donor.donationDate}
-									</td>{" "}
+									</td>
 									<td className="border px-4 py-2 text-center ">
 										{donor.customId}
 									</td>
@@ -190,18 +184,8 @@ const DonorList: React.FC = () => {
 										</button>
 										<button
 											onClick={() => {
-												if (donor.id !== undefined) {
-													const confirmDelete = window.prompt(
-														"Type 'DELETE' to confirm the deletion"
-													);
-													if (confirmDelete === "DELETE") {
-														handleDelete(donor.id);
-													} else {
-														alert("Delete operation canceled.");
-													}
-												} else {
-													alert("Invalid donor ID");
-												}
+												setDonorToDelete(donor);
+												setOpenDeleteModal(true);
 											}}
 											className="bg-red-500 text-white px-2 py-1 rounded hover:bg-gray-700"
 										>
@@ -276,8 +260,6 @@ const DonorList: React.FC = () => {
 										className="block w-full border-gray-300 rounded-md shadow-sm"
 									/>
 								</div>
-
-								{/* Email */}
 								<div className="relative">
 									<input
 										name="email"
@@ -288,8 +270,6 @@ const DonorList: React.FC = () => {
 										className="block w-full border-gray-300 rounded-md shadow-sm"
 									/>
 								</div>
-
-								{/* Blood Group */}
 								<div className="relative">
 									<input
 										name="bloodGroup"
@@ -300,8 +280,6 @@ const DonorList: React.FC = () => {
 										className="block w-full border-gray-300 rounded-md shadow-sm"
 									/>
 								</div>
-
-								{/* Rh Factor */}
 								<div className="relative">
 									<select
 										name="rhFactor"
@@ -313,8 +291,6 @@ const DonorList: React.FC = () => {
 										<option value="negative">Negative</option>
 									</select>
 								</div>
-
-								{/* Donation Date */}
 								<div className="relative">
 									<input
 										name="donationDate"
@@ -325,7 +301,6 @@ const DonorList: React.FC = () => {
 										className="block w-full border-gray-300 rounded-md shadow-sm"
 									/>
 								</div>
-
 								<div className="mt-4 flex justify-end space-x-2">
 									<button
 										onClick={() => setEditingDonor(null)}
@@ -340,6 +315,38 @@ const DonorList: React.FC = () => {
 										Save
 									</button>
 								</div>
+							</div>
+						</div>
+					</div>
+				)}
+
+				{openDeleteModal && (
+					<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+						<div className="bg-white p-6 rounded shadow-md w-96">
+							<h3 className="text-lg font-semibold mb-4">Confirm Deletion</h3>
+							<p className="mb-4">
+								Please type <strong>deletedonation</strong> to confirm the
+								deletion.
+							</p>
+							<input
+								type="text"
+								value={deleteConfirmation}
+								onChange={(e) => setDeleteConfirmation(e.target.value)}
+								className="border border-gray-300 rounded-md px-4 py-2 w-full mb-4"
+							/>
+							<div className="flex justify-end space-x-2">
+								<button
+									onClick={() => setOpenDeleteModal(false)}
+									className="bg-gray-500 text-white px-4 py-2 rounded"
+								>
+									Cancel
+								</button>
+								<button
+									onClick={handleDelete}
+									className="bg-red-500 text-white px-4 py-2 rounded"
+								>
+									Delete
+								</button>
 							</div>
 						</div>
 					</div>

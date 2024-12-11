@@ -4,13 +4,16 @@
 	"version": "0.0.0",
 	"type": "module",
 	"scripts": {
-		"dev": "tauri dev",
+		"dev": "vite",
 		"build": "vite build",
 		"lint": "eslint .",
 		"preview": "vite preview"
 	},
 	"dependencies": {
+		"@emotion/react": "^11.14.0",
+		"@emotion/styled": "^11.14.0",
 		"@fontsource/inter": "^5.1.0",
+		"@mui/material": "^5.16.11",
 		"@radix-ui/react-dialog": "^1.1.2",
 		"@radix-ui/react-popover": "^1.1.2",
 		"@radix-ui/react-slot": "^1.1.0",
