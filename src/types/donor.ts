@@ -1,5 +1,6 @@
 export interface Donor {
     id?: number;
+    customId?: string;
     fullName: string;
     phoneNumber: string;
     address: string;
@@ -10,4 +11,5 @@ export interface Donor {
     bloodGroup: string;
     rhFactor: string;
     phenotype: string;
+    donationDate: string;
 }

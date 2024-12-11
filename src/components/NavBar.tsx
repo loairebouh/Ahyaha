@@ -1,12 +1,18 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Navbar: React.FC = () => {
 	const location = useLocation();
+	const navigate = useNavigate();
+
+	const handleSignOut = () => {
+		localStorage.removeItem("user");
+		navigate("/login");
+	};
 
 	return (
-		<nav className="bg-blue-950 text-white p-4 flex items-center">
-			<ul className="flex flex-row gap-8 items-center mx-auto text-3xl">
+		<nav className="bg-blue-950 text-white p-4 flex items-center justify-between">
+			<ul className="flex flex-row gap-8 items-center text-3xl">
 				<li
 					className={
 						location.pathname === "/add-donor"
@@ -46,6 +52,12 @@ const Navbar: React.FC = () => {
 					<Link to="/bank-status">Bank Status</Link>
 				</li>
 			</ul>
+			<button
+				onClick={handleSignOut}
+				className="bg-red-500 text-white px-4 py-2 rounded"
+			>
+				Sign Out
+			</button>
 		</nav>
 	);
 };

@@ -15,6 +15,7 @@ const App: React.FC = () => {
 				<Route path="/add-donor" element={<AddDonorForm />} />
 				<Route path="/donor-list" element={<DonorList />} />
 				<Route path="/bank-status" element={<BankStatus />} />
+				<Route path="/login" element={<LoginPage />} />
 			</Routes>
 		</Router>
 	);

@@ -25,31 +25,21 @@ const BankStatus: React.FC = () => {
 	const [chartData, setChartData] = useState<any>(null);
 
 	useEffect(() => {
-		// Fetch donor data from localStorage
 		const donors = JSON.parse(localStorage.getItem("donors") || "[]");
-
-		// Initialize a data structure to store counts based on blood group and Rh factor
 		const bloodGroups = ["A", "B", "AB", "O"];
 		const rhFactors = ["+", "-"];
-
-		// Create an object to hold the count of donors for each blood group and Rh factor combination
 		const data: any = {};
-
 		bloodGroups.forEach((bloodGroup) => {
 			rhFactors.forEach((rh) => {
-				data[`${bloodGroup}${rh}`] = 0; // Initialize the count for each combination
+				data[`${bloodGroup}${rh}`] = 0;
 			});
 		});
-
-		// Count donors based on their blood group and Rh factor
 		donors.forEach((donor: any) => {
 			const key = `${donor.bloodGroup}${donor.rhFactor}`;
 			if (data[key] !== undefined) {
-				data[key] += 1; // Increment count for this specific combination
+				data[key] += 1;
 			}
 		});
-
-		// Prepare data for the chart
 		const chartData = {
 			labels: [
 				"A (+)",
@@ -74,8 +64,8 @@ const BankStatus: React.FC = () => {
 						data["O+"],
 						data["O-"],
 					],
-					backgroundColor: "rgba(75, 192, 192, 0.2)", // Light green color for bars
-					borderColor: "rgba(75, 192, 192, 1)", // Darker green color for borders
+					backgroundColor: "rgba(75, 192, 192, 0.2)",
+					borderColor: "rgba(75, 192, 192, 1)",
 					borderWidth: 1,
 				},
 			],
@@ -88,9 +78,13 @@ const BankStatus: React.FC = () => {
 	return (
 		<div>
 			<NavBar></NavBar>
-			<div className="p-20 mb-10">
-				<h2 className="text-2xl font-semibold mb-4 mx-auto">Bank Status</h2>
-				{chartData ? <Bar data={chartData} /> : <p>Loading...</p>}
+			<div className="p-20 mb-0">
+				<h2 className="text-5xl text-center font-semibold mb-3 mx-auto">
+					Bank Status
+				</h2>
+				<div className="p-10 mt-0">
+					{chartData ? <Bar data={chartData} /> : <p>Loading...</p>}
+				</div>
 			</div>
 		</div>
 	);

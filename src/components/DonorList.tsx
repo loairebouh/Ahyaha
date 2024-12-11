@@ -9,7 +9,6 @@ const DonorList: React.FC = () => {
 	const [editingDonor, setEditingDonor] = useState<Donor | null>(null);
 
 	useEffect(() => {
-		// Load donors from localStorage
 		const storedDonors = JSON.parse(localStorage.getItem("donors") || "[]");
 		setDonors(storedDonors);
 	}, []);
@@ -21,12 +20,9 @@ const DonorList: React.FC = () => {
 		);
 
 		if (confirmation?.toLowerCase() === "delete") {
-			// Filter out the donor by ID
 			const updatedDonors = donors.filter((donor) => donor.id !== id);
-
-			// Update localStorage with the new donors list
 			localStorage.setItem("donors", JSON.stringify(updatedDonors));
-			setDonors(updatedDonors); // Update the state with the filtered list
+			setDonors(updatedDonors);
 		} else {
 			alert("Deletion cancelled. Type 'delete' to confirm.");
 		}
@@ -39,14 +35,16 @@ const DonorList: React.FC = () => {
 		const checked =
 			type === "checkbox" ? (e.target as HTMLInputElement).checked : undefined;
 
-		setEditingDonor((prev) =>
-			prev ? { ...prev, [name]: type === "checkbox" ? checked : value } : null
-		);
+		console.log("Updating donor:", { name, value });
+
+		setEditingDonor((prev) => {
+			if (!prev) return prev;
+			return { ...prev, [name]: type === "checkbox" ? checked : value };
+		});
 	};
 
 	const handleEditSave = () => {
 		if (editingDonor) {
-			// Save updated donor data in localStorage
 			const updatedDonors = donors.map((donor) =>
 				donor.id === editingDonor.id ? editingDonor : donor
 			);
@@ -69,7 +67,7 @@ const DonorList: React.FC = () => {
 		<div>
 			<NavBar />
 			<div className="p-4 bg-white shadow rounded relative">
-				<h2 className="text-lg font-semibold mb-4">Donor List</h2>
+				<h2 className="text-lg font-semibold mb-4">Donations List</h2>
 
 				<div className="mb-4 flex items-center space-x-2">
 					<input
@@ -91,9 +89,10 @@ const DonorList: React.FC = () => {
 					</select>
 				</div>
 
-				<table className="table-auto w-full border-collapse border border-gray-300">
+				<table className="table-auto w-full border-collapse border border-gray-500">
 					<thead>
 						<tr className="bg-gray-100">
+							<th className="border px-4 py-2">Custom ID</th>
 							<th className="border px-4 py-2">Name</th>
 							<th className="border px-4 py-2">Phone</th>
 							<th className="border px-4 py-2">Address</th>
@@ -107,6 +106,8 @@ const DonorList: React.FC = () => {
 						{filteredDonors.length > 0 ? (
 							filteredDonors.map((donor) => (
 								<tr key={donor.id} className="hover:bg-gray-50">
+									<td className="border px-4 py-2">{donor.customId}</td>{" "}
+									{/* Display Custom ID */}
 									<td className="border px-4 py-2">{donor.fullName}</td>
 									<td className="border px-4 py-2">{donor.phoneNumber}</td>
 									<td className="border px-4 py-2">{donor.address}</td>
@@ -144,10 +145,7 @@ const DonorList: React.FC = () => {
 							))
 						) : (
 							<tr>
-								<td
-									colSpan={7}
-									className="text-center border px-4 py-2 text-gray-500"
-								>
+								<td className="text-center border px-4 py-2 text-gray-500">
 									No donors found.
 								</td>
 							</tr>
@@ -155,12 +153,21 @@ const DonorList: React.FC = () => {
 					</tbody>
 				</table>
 
-				{/* Edit Donor Modal */}
 				{editingDonor && (
 					<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
 						<div className="bg-white p-6 rounded shadow-md w-96">
 							<h3 className="text-lg font-semibold mb-4">Edit Donor</h3>
 							<div className="space-y-4">
+								<div className="relative">
+									<input
+										name="id"
+										type="text"
+										placeholder="ID"
+										value={editingDonor.customId}
+										className="block w-full border-gray-300 rounded-md shadow-sm"
+										readOnly
+									/>
+								</div>
 								<div className="relative">
 									<input
 										name="fullName"
@@ -199,86 +206,58 @@ const DonorList: React.FC = () => {
 										className="block w-full border-gray-300 rounded-md shadow-sm"
 									/>
 								</div>
+
+								{/* Email */}
 								<div className="relative">
 									<input
 										name="email"
 										type="email"
-										placeholder="Email Address *"
+										placeholder="Email"
 										value={editingDonor.email}
 										onChange={handleInputChange}
 										className="block w-full border-gray-300 rounded-md shadow-sm"
-										required
 									/>
-									<span className="absolute text-red-500 text-xl top-2 right-2">
-										*
-									</span>
 								</div>
+
+								{/* Blood Group */}
 								<div className="relative">
-									<select
+									<input
 										name="bloodGroup"
+										type="text"
+										placeholder="Blood Group"
 										value={editingDonor.bloodGroup}
 										onChange={handleInputChange}
 										className="block w-full border-gray-300 rounded-md shadow-sm"
-										required
-									>
-										<option value="A">A</option>
-										<option value="B">B</option>
-										<option value="AB">AB</option>
-										<option value="O">O</option>
-									</select>
-									<span className="absolute text-red-500 text-xl top-2 right-2">
-										*
-									</span>
+									/>
 								</div>
+
+								{/* Rh Factor */}
 								<div className="relative">
 									<select
 										name="rhFactor"
 										value={editingDonor.rhFactor}
 										onChange={handleInputChange}
 										className="block w-full border-gray-300 rounded-md shadow-sm"
-										required
 									>
-										<option value="+">+</option>
-										<option value="-">-</option>
+										<option value="positive">Positive</option>
+										<option value="negative">Negative</option>
 									</select>
-									<span className="absolute text-red-500 text-xl top-2 right-2">
-										*
-									</span>
 								</div>
-								<div className="relative">
-									<input
-										name="phenotype"
-										type="text"
-										placeholder="Blood Phenotype"
-										value={editingDonor.phenotype || ""}
-										onChange={handleInputChange}
-										className="block w-full border-gray-300 rounded-md shadow-sm"
-									/>
+
+								<div className="flex space-x-4 mt-4">
+									<button
+										onClick={() => setEditingDonor(null)}
+										className="bg-gray-300 text-black px-4 py-2 rounded"
+									>
+										Cancel
+									</button>
+									<button
+										onClick={handleEditSave}
+										className="bg-blue-500 text-white px-4 py-2 rounded"
+									>
+										Save
+									</button>
 								</div>
-								<div className="relative flex items-center space-x-2">
-									<input
-										name="marriedStatus"
-										type="checkbox"
-										checked={!!editingDonor.marriedStatus}
-										onChange={handleInputChange}
-										className="h-4 w-4 text-blue-600"
-									/>
-									<span>Married</span>
-								</div>
-							</div>
-							<div className="mt-4 flex justify-end space-x-2">
-								<button
-									onClick={() => setEditingDonor(null)}
-									className="px-4 py-2 bg-gray-300 rounded"
-								>
-									Cancel
-								</button>
-								<button
-									onClick={handleEditSave}
-									className="px-4 py-2 bg-blue-600 text-white rounded"
-								>
-									Save
-								</button>
 							</div>
 						</div>
 					</div>

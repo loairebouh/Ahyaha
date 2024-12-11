@@ -5,6 +5,7 @@ import NavBar from "./NavBar";
 const AddDonorForm: React.FC = () => {
 	const navigate = useNavigate();
 	const [form, setForm] = useState({
+		customId: "",
 		fullName: "",
 		phoneNumber: "",
 		address: "",
@@ -15,6 +16,7 @@ const AddDonorForm: React.FC = () => {
 		bloodGroup: "",
 		rhFactor: "",
 		phenotype: "",
+		donationDate: new Date().toISOString().split("T")[0], // Default to today's date
 	});
 	const [showPopup, setShowPopup] = useState(false);
 
@@ -53,6 +55,7 @@ const AddDonorForm: React.FC = () => {
 
 		// Reset form state
 		setForm({
+			customId: "",
 			fullName: "",
 			phoneNumber: "",
 			address: "",
@@ -63,6 +66,7 @@ const AddDonorForm: React.FC = () => {
 			bloodGroup: "",
 			rhFactor: "",
 			phenotype: "",
+			donationDate: new Date().toISOString().split("T")[0], // Reset to today
 		});
 	};
 
@@ -80,6 +84,19 @@ const AddDonorForm: React.FC = () => {
 				onSubmit={handleSubmit}
 				className="p-6 bg-white shadow rounded space-y-6 max-w-2xl mx-auto"
 			>
+				{/* Custom ID */}
+				<div className="flex flex-col">
+					<label className="font-semibold text-sm">Custom ID</label>
+					<input
+						name="customId"
+						type="text"
+						placeholder="Custom ID"
+						value={form.customId}
+						onChange={handleInputChange}
+						className="block w-full border-gray-300 rounded-md shadow-sm p-2 mt-2"
+					/>
+				</div>
+
 				{/* Form Inputs */}
 				<div className="flex flex-col">
 					<label className="font-semibold text-sm">
@@ -211,6 +228,21 @@ const AddDonorForm: React.FC = () => {
 					/>
 					<span className="text-sm">Married</span>
 				</div>
+				<div className="flex flex-col">
+					<label className="font-semibold text-sm">
+						Date of Donation <span className="text-red-500">*</span>
+					</label>
+					<input
+						name="dateOfDonation"
+						type="date"
+						placeholder="Date of Donation"
+						value={form.donationDate}
+						onChange={handleInputChange}
+						required
+						className="block w-full border-gray-300 rounded-md shadow-sm p-2 mt-2"
+					/>
+				</div>
+
 				<button
 					type="submit"
 					className="w-full bg-blue-600 text-white py-3 rounded-lg mt-4"
