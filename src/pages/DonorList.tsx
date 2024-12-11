@@ -76,9 +76,10 @@ const DonorList: React.FC = () => {
 		<div>
 			<NavBar />
 			<div className="p-4 bg-white shadow rounded relative">
-				<h2 className="text-lg font-semibold mb-4">Donations List</h2>
-
-				<div className="mb-4 flex items-center space-x-2">
+				<h2 className="mt-10 text-4xl text-center font-semibold mb-7">
+					Donations List
+				</h2>
+				<div className="mb-4 grid grid-cols-10 gap-4">
 					<input
 						type="text"
 						placeholder={`Search by ${
@@ -92,12 +93,12 @@ const DonorList: React.FC = () => {
 						}`}
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
-						className="border rounded px-4 py-2 w-full"
+						className="border border-blue-950 rounded px-4 py-2 w-full col-span-6"
 					/>
 					<select
 						value={searchBy}
 						onChange={(e) => setSearchBy(e.target.value)}
-						className="border rounded px-4 py-2"
+						className="border border-red-800 rounded px-4 py-2 col-span-4"
 					>
 						<option value="name">Name</option>
 						<option value="bloodGroup">Blood Group</option>
@@ -109,15 +110,14 @@ const DonorList: React.FC = () => {
 				<table className="table-auto w-full border-collapse border border-gray-500">
 					<thead>
 						<tr className="bg-gray-100">
+							<th className="border px-4 py-2">Donation Date</th>{" "}
 							<th className="border px-4 py-2">Custom ID</th>
 							<th className="border px-4 py-2">Name</th>
 							<th className="border px-4 py-2">Phone</th>
 							<th className="border px-4 py-2">Address</th>
-							<th className="border px-4 py-2">Email</th>
 							<th className="border px-4 py-2">Blood Group</th>
 							<th className="border px-4 py-2">Rh Factor</th>
-							<th className="border px-4 py-2">Donation Date</th>{" "}
-							{/* New column */}
+							<th className="border px-4 py-2">Phenotype</th>
 							<th className="border px-4 py-2">Actions</th>
 						</tr>
 					</thead>
@@ -125,21 +125,32 @@ const DonorList: React.FC = () => {
 						{filteredDonors.length > 0 ? (
 							filteredDonors.map((donor) => (
 								<tr key={donor.id} className="hover:bg-gray-50">
-									<td className="border px-4 py-2">{donor.customId}</td>
-									<td className="border px-4 py-2">{donor.fullName}</td>
-									<td className="border px-4 py-2">{donor.phoneNumber}</td>
-									<td className="border px-4 py-2">{donor.address}</td>
-									<td className="border px-4 py-2">{donor.email}</td>
-									<td className="border px-4 py-2">{donor.bloodGroup}</td>
-									<td className="border px-4 py-2">{donor.rhFactor}</td>
-									<td className="border px-4 py-2">
+									<td className="border px-4 py-2 text-center">
 										{donor.donationDate}
 									</td>{" "}
-									{/* Display Donation Date */}
-									<td className="border px-4 py-2 flex space-x-2">
+									<td className="border px-4 py-2 text-center ">
+										{donor.customId}
+									</td>
+									<td className="border px-4 py-2 text-center font-bold">
+										{donor.fullName}
+									</td>
+									<td className="border px-4 py-2 text-center">
+										{donor.phoneNumber}
+									</td>
+									<td className="border px-4 py-2">{donor.address}</td>
+									<td className="border px-4 py-2 text-center font-bold ">
+										{donor.bloodGroup}
+									</td>
+									<td className="border px-4 py-2 text-center font-bold ">
+										{donor.rhFactor}
+									</td>
+									<td className="border px-4 py-2 text-center font-bold">
+										{donor.phenotype}
+									</td>
+									<td className="border	 px-4 py-2 flex flex-row gap-2 items-center justify-center">
 										<button
 											onClick={() => setEditingDonor(donor)}
-											className="bg-blue-500 text-white px-2 py-1 rounded"
+											className="bg-blue-500 text-white px-2 py-1 rounded hover:bg-gray-700"
 										>
 											Edit
 										</button>
@@ -158,7 +169,7 @@ const DonorList: React.FC = () => {
 													alert("Invalid donor ID");
 												}
 											}}
-											className="bg-red-500 text-white px-2 py-1 rounded"
+											className="bg-red-500 text-white px-2 py-1 rounded hover:bg-gray-700"
 										>
 											Delete
 										</button>

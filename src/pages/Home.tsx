@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import slogenImage from "../assets/heart.png";
+import qotra from "../assets/qotralogo.png";
 
 const Home: React.FC = () => {
 	const navigate = useNavigate();
@@ -30,6 +31,9 @@ const Home: React.FC = () => {
 			</div>
 			<div className="text-center align-bottom mt-10 mb-0 pb-0">
 				All Rights Reserved to Qotra Development 2025
+			</div>
+			<div>
+				<img src={qotra} alt="qotra image" className="w-10 mx-auto" />
 			</div>
 		</div>
 	);
