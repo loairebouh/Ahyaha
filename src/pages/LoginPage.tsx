@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import qotraLogo from "@/assets/qotralogo.png";
 
 const LoginPage: React.FC = () => {
 	const [username, setUsername] = useState("");
@@ -21,9 +22,12 @@ const LoginPage: React.FC = () => {
 			<div className="flex items-center justify-center h-screen bg-gray-100">
 				<form
 					onSubmit={handleLogin}
-					className="p-4 bg-white shadow rounded space-y-4"
+					className="p-4 bg-white shadow rounded space-y-4 "
 				>
-					<h2 className="text-lg font-semibold">Login</h2>
+					<div className="flex flex-col gap-2 justify-center items-center">
+						<img src={qotraLogo} className="w-20" />
+						<h2 className="text-lg font-semibold">Login to Ahyaha</h2>
+					</div>
 					<input
 						type="text"
 						placeholder="Username"
@@ -44,6 +48,10 @@ const LoginPage: React.FC = () => {
 					>
 						Login
 					</button>
+					<p className="text-xs text-center">
+						&copy; 2025 Ahyaha App. All Rights Reserved to Qotra Development
+						2025.
+					</p>
 				</form>
 			</div>
 		</div>

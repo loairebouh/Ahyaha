@@ -8,6 +8,8 @@ const DonorList: React.FC = () => {
 	const [searchQuery, setSearchQuery] = useState("");
 	const [searchBy, setSearchBy] = useState("name");
 	const [editingDonor, setEditingDonor] = useState<Donor | null>(null);
+	const [startDate, setStartDate] = useState<string>("");
+	const [endDate, setEndDate] = useState<string>("");
 
 	useEffect(() => {
 		const storedDonors = JSON.parse(localStorage.getItem("donors") || "[]");
@@ -56,30 +58,39 @@ const DonorList: React.FC = () => {
 	const filteredDonors = donors
 		.filter((donor) => {
 			const query = searchQuery.toLowerCase();
-
 			const customId = donor.customId || "";
+			const donationDate = new Date(donor.donationDate);
 
+			// Filter by search query
+			let matchesQuery = false;
 			if (searchBy === "name") {
-				return donor.fullName.toLowerCase().includes(query);
+				matchesQuery = donor.fullName.toLowerCase().includes(query);
 			} else if (searchBy === "bloodGroup") {
-				return donor.bloodGroup.toLowerCase().includes(query);
+				matchesQuery = donor.bloodGroup.toLowerCase().includes(query);
 			} else if (searchBy === "customId") {
-				return customId.toLowerCase().includes(query); // Safe customId check
+				matchesQuery = customId.toLowerCase().includes(query);
 			} else if (searchBy === "donationDate") {
-				return donor.donationDate.toLowerCase().includes(query);
+				matchesQuery = donor.donationDate.toLowerCase().includes(query);
 			}
-			return false;
+
+			// Filter by date range
+			const matchesDateRange =
+				(!startDate || donationDate >= new Date(startDate)) &&
+				(!endDate || donationDate <= new Date(endDate));
+
+			return matchesQuery && matchesDateRange;
 		})
 		.reverse();
 
 	return (
-		<div>
+		<div className="flex flex-col min-h-screen">
 			<NavBar />
-			<div className="p-4 bg-white shadow rounded relative">
+			<div className="flex-grow p-4 bg-white shadow rounded relative ">
 				<h2 className="mt-10 text-4xl text-center font-semibold mb-7">
 					Donations List
 				</h2>
 				<div className="mb-4 grid grid-cols-10 gap-4">
+					{/* Search Input */}
 					<input
 						type="text"
 						placeholder={`Search by ${
@@ -95,6 +106,8 @@ const DonorList: React.FC = () => {
 						onChange={(e) => setSearchQuery(e.target.value)}
 						className="border border-blue-950 rounded px-4 py-2 w-full col-span-6"
 					/>
+
+					{/* Search By Dropdown */}
 					<select
 						value={searchBy}
 						onChange={(e) => setSearchBy(e.target.value)}
@@ -103,8 +116,29 @@ const DonorList: React.FC = () => {
 						<option value="name">Name</option>
 						<option value="bloodGroup">Blood Group</option>
 						<option value="customId">Custom ID</option>
-						<option value="donationDate">Donation Date</option>
 					</select>
+				</div>
+				<div className="grid grid-cols-2  justify-center my-5 mx-auto">
+					<div className="flex flex-row gap-4 col-span-1">
+						<span className="my-auto">Start Date</span>
+						<input
+							type="date"
+							value={startDate}
+							onChange={(e) => setStartDate(e.target.value)}
+							className="text-center border border-gray-300 rounded px-4 py-2 col-span-4"
+							placeholder="Start Date"
+						/>
+					</div>
+					<div className="flex flex-row gap-4 col-span-1">
+						<span className="my-auto">End Date</span>
+						<input
+							type="date"
+							value={endDate}
+							onChange={(e) => setEndDate(e.target.value)}
+							className="border border-gray-300 rounded px-4 py-2 col-span-4"
+							placeholder="End Date"
+						/>
+					</div>
 				</div>
 
 				<table className="table-auto w-full border-collapse border border-gray-500">
@@ -311,6 +345,11 @@ const DonorList: React.FC = () => {
 					</div>
 				)}
 			</div>
+			<footer className="bg-blue-950 text-white text-center p-4 mt-4">
+				<p>
+					&copy; 2025 Ahyaha App. All Rights Reserved to Qotra Development 2025.
+				</p>
+			</footer>
 		</div>
 	);
 };

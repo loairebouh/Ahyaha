@@ -2,13 +2,12 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import NavBar from "../components/NavBar";
 import slogenImage from "../assets/heart.png";
-import qotra from "../assets/qotralogo.png";
 
 const Home: React.FC = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div>
+		<div className="relative shadow rounded">
 			<NavBar></NavBar>
 			<img
 				src={slogenImage}
@@ -26,15 +25,14 @@ const Home: React.FC = () => {
 					onClick={() => navigate("/donor-list")}
 					className="bg-blue-950	 text-white py-20 rounded-xl shadow text-center cursor-pointer"
 				>
-					<div className="text-5xl font-medium">Donation List</div>
+					<div className="text-5xl font-medium">Donations List</div>
 				</div>
 			</div>
-			<div className="text-center align-bottom mt-10 mb-0 pb-0">
-				All Rights Reserved to Qotra Development 2025
-			</div>
-			<div>
-				<img src={qotra} alt="qotra image" className="w-10 mx-auto" />
-			</div>
+			<footer className="bg-blue-950 text-white text-center p-4 mt-4">
+				<p>
+					&copy; 2025 Ahyaha App. All Rights Reserved to Qotra Development 2025.
+				</p>
+			</footer>
 		</div>
 	);
 };
