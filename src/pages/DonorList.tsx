@@ -71,6 +71,8 @@ const DonorList: React.FC = () => {
 				matchesQuery = customId.toLowerCase().includes(query);
 			} else if (searchBy === "donationDate") {
 				matchesQuery = donor.donationDate.toLowerCase().includes(query);
+			} else if (searchBy === "phenotype") {
+				matchesQuery = donor.phenotype?.toLowerCase().includes(query); // Added phenotype condition
 			}
 
 			// Filter by date range
@@ -106,8 +108,6 @@ const DonorList: React.FC = () => {
 						onChange={(e) => setSearchQuery(e.target.value)}
 						className="border border-blue-950 rounded px-4 py-2 w-full col-span-6"
 					/>
-
-					{/* Search By Dropdown */}
 					<select
 						value={searchBy}
 						onChange={(e) => setSearchBy(e.target.value)}
@@ -116,6 +116,7 @@ const DonorList: React.FC = () => {
 						<option value="name">Name</option>
 						<option value="bloodGroup">Blood Group</option>
 						<option value="customId">Custom ID</option>
+						<option value="phenotype">Phenotype</option>
 					</select>
 				</div>
 				<div className="grid grid-cols-2  justify-center my-5 mx-auto">
