@@ -1,5 +1,7 @@
 import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import { FaRegPlusSquare } from "react-icons/fa";
+import { FaSignOutAlt } from "react-icons/fa";
 
 const Navbar: React.FC = () => {
 	const location = useLocation();
@@ -12,18 +14,7 @@ const Navbar: React.FC = () => {
 
 	return (
 		<nav className="bg-blue-950 text-white p-4 flex items-center justify-between">
-			<ul className="flex flex-row gap-8 items-center text-3xl">
-				<li
-					className={
-						location.pathname === "/add-donor"
-							? "font-bold text-decoration: underline"
-							: ""
-					}
-				>
-					<Link className="text-green-500" to="/add-donor">
-						New
-					</Link>
-				</li>
+			<ul className="flex flex-row  ml-10 gap-10 items-center text-xl font-semiBold">
 				<li
 					className={
 						location.pathname === "/home"
@@ -52,12 +43,31 @@ const Navbar: React.FC = () => {
 					<Link to="/bank-status">Bank Status</Link>
 				</li>
 			</ul>
-			<button
-				onClick={handleSignOut}
-				className="bg-red-500 text-white px-4 py-2 rounded"
-			>
-				Sign Out
-			</button>
+			<div className="flex space-x-4">
+				<button
+					onClick={() => navigate("/add-donor")}
+					className="bg-green-500 text-white px-10 py-2 rounded"
+				>
+					<span className="flex flew-row justify-center gap-3">
+						Add Donor{" "}
+						<span className="my-auto">
+							{" "}
+							<FaRegPlusSquare />
+						</span>
+					</span>
+				</button>
+				<button
+					onClick={handleSignOut}
+					className="bg-red-500 text-white px-4 py-2 rounded"
+				>
+					<span className="flex flew-row justify-center gap-3">
+						Sign Out
+						<span className="my-auto">
+							<FaSignOutAlt />
+						</span>
+					</span>
+				</button>
+			</div>
 		</nav>
 	);
 };
