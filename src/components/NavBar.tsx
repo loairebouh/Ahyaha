@@ -7,16 +7,43 @@ const Navbar: React.FC = () => {
 	return (
 		<nav className="bg-blue-950 text-white p-4 flex items-center">
 			<ul className="flex flex-row gap-8 items-center mx-auto text-3xl">
-				<li className={location.pathname === "/add-donor" ? "font-bold" : ""}>
+				<li
+					className={
+						location.pathname === "/add-donor"
+							? "font-bold text-decoration: underline"
+							: ""
+					}
+				>
 					<Link className="text-green-500" to="/add-donor">
 						New
 					</Link>
 				</li>
-				<li className={location.pathname === "/home" ? "font-bold" : ""}>
+				<li
+					className={
+						location.pathname === "/home"
+							? "font-bold text-decoration: underline"
+							: ""
+					}
+				>
 					<Link to="/home">Home</Link>
 				</li>
-				<li className={location.pathname === "/donor-list" ? "font-bold" : ""}>
+				<li
+					className={
+						location.pathname === "/donor-list"
+							? "font-bold text-decoration: underline"
+							: ""
+					}
+				>
 					<Link to="/donor-list">Donors List</Link>
+				</li>
+				<li
+					className={
+						location.pathname === "/bank-status"
+							? "font-bold text-decoration: underline"
+							: ""
+					}
+				>
+					<Link to="/bank-status">Bank Status</Link>
 				</li>
 			</ul>
 		</nav>
