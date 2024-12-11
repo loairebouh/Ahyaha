@@ -92,7 +92,6 @@ const DonorList: React.FC = () => {
 					Donations List
 				</h2>
 				<div className="mb-4 grid grid-cols-10 gap-4">
-					{/* Search Input */}
 					<input
 						type="text"
 						placeholder={`Search by ${

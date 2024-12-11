@@ -26,3 +26,5 @@ tauri-plugin-log = "2.0.0-rc"
 
 [target.x86_64-pc-windows-gnu]
 linker = "x86_64-w64-mingw32-gcc"
+
+path = "src/app_lib.rs"
