@@ -34,7 +34,7 @@ const DonorList: React.FC = () => {
 	const handleInputChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
 	) => {
-		const { name, value, type } = e.target;
+		const { name, value } = e.target;
 
 		console.log("Updating donor:", { name, value });
 
